@@ -1,0 +1,73 @@
+<!-- $$$$$$$$$$$$$$$$$$$$$$$$$$ PAGINATION ELEMENTS $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$        -->
+ <h1 class="page-header">{{source.model | capitalize}}:
+        <span>
+          <button ng-hide="totalList" ng-click="showAll()" class="btn btn-info" popover="Show All records!" popover-trigger="mouseenter">Show All</button>
+          <button ng-show="searchBox" ng-click="searchData()" class="btn btn-info" popover="Bring Search panel Back!" popover-trigger="mouseenter">Search Box</button>
+         </span> 
+        <span>
+          <button ng-show="controlPage" ng-click="addModalData(data)" class="btn btn-warning" popover-placement="bottom" popover="Create New record!" popover-trigger="mouseenter">New record</button>
+         </span>  
+        <h4 class="dataDisplay">Total ( {{payload.length}} records )</h4>
+        <!-- Page item count option -->
+        <h4 class="countTable">
+          <span class="input-group-addon">Items displayed</span> 
+            <select class="form-control" name="count" type="text" ng-model="pageSize" ng-change="calculate()" id="selectItemPerPage">
+              <option default selected>8</option>
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+              <option>100</option>
+              <option>500</option>
+              <option>All</option>
+            </select>
+           </span>
+         </h4> 
+       </h1>  
+<!-- $$$$$$$$$$$$$$$$$$$$$$$$$$ PAGINATION ELEMENTS $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$        -->
+
+<!-- search filter -->
+<locations></locations>
+<search data='source' filtermodel ='search' found='filtered.length'></search>
+<!-- This is the iteration of content from database to display here -->
+    <div ng-show="status_show" class="dataDisplay_status">{{data_status}}</div>
+  <section id="pinBoot">  
+<!--    <div infinite-scroll='loaddata()' 
+        infinite-scroll-disabled='infinite'
+        infinite-scroll-listen-for-event="list:filtered"  
+        infinite-scroll-immediate-check = false
+        infinite-scroll-distance='1'>   -->  
+    <article ng-class="source.layout" ng-repeat="(key,value) in filtered =(payload | advancefilter:search) | orderBy:'-created_at' |
+            pagination: (currentPage-1) * pageSize| limitTo:pageSize">
+      <a class="display" href="#" ng-click='getDetails("foods",value._id)'><img src={{value.img}} alt=""></a>
+      <h4><a href="#">{{value[source.fields[1].name] | capitalize}}</a>
+        <span class="green_span">{{value[source.fields[3].name] | currency}}</span>
+      </h4>
+      <h6><strong><a href="#">{{value[source.fields[6].name] }}</a></strong>
+          <span class="created_at">| {{value[source.fields[7].name] | date: 'longDate'}}</span>
+      </h6>
+       <hr class="display_hr">
+      <p>{{value[source.fields[2].name]}}</p>
+         <span class="brown_span" ng-click="sortField(source.fields[4].name,value[source.fields[4].name])">{{value[source.fields[4].name] | capitalize}}</span>
+         <span class="greenBk_span" ng-click="sortField(source.fields[5].name,value[source.fields[5].name])">{{value[source.fields[5].name] | capitalize}}</span>
+      <hr class="display_hr">
+      <display-control data='source' item="value"></display-control>
+    </article>
+      <div ng-show='busy'>Loading data...</div>
+     </div> 
+  </section>
+
+<!-- $$$$$$$$$$$$$$$$$$$$$$$$$$ PAGINATION ELEMENTS $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$        -->
+<div class="clearfix"></div>
+<div class="col-lg-12">
+  <pagination ng-show="totalList" total-items="totalItems" items-per-page="pageSize" data-boundary-links="true" num-pages="numPages" 
+       ng-model="currentPage" max-size="maxSize" data-previous-text="&laquo;" data-next-text="&raquo;">
+   </pagination> 
+  <pagination ng-show="searchPag" id="searchPag" ng-show="searchPag" total-items="searchItems" items-per-page="pageSize" data-boundary-links="true" num-pages="numPages" 
+    ng-model="currentPage" max-size="maxSize" data-previous-text="&laquo;" data-next-text="&raquo;">
+   </pagination> 
+ </div>
+<!-- $$$$$$$$$$$$$$$$$$$$$$$$$$ PAGINATION ELEMENTS $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$        -->
+
+<!-- Polymer elemet of geo-tag for browser location -->
+<geo-location></geo-location>
+  
