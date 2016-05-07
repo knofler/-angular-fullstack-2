@@ -22,6 +22,7 @@ angular.module('angularFullstack2App', [
   'ngTouch',
   'ngDraggable',
   'angularSmoothscroll',
+  'rx',
   'stripe'
 ])
 .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
